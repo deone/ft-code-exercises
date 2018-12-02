@@ -71,3 +71,9 @@ class TestStudent:
             },
             'subject': 'Health Education'
         }
+
+    def test_submit_incomplete_quiz(self):
+        quiz = self.student.solve_question(1, 'A')
+        with pytest.raises(InvalidAction) as excinfo:
+            self.student.submit_quiz(quiz)
+        assert 'You can only submit quiz after answering all questions.' in str(excinfo.value)
