@@ -8,8 +8,8 @@ class TestTeacher:
     def create_quiz(self, subject):
         self.t.create_quiz(subject)
 
-    def add_question(self, subject, question, answers):
-        return self.t.add_question(subject, question, answers)
+    def add_question(self, subject, question, options, answer):
+        return self.t.add_question(subject, question, options, answer)
 
     def test_teacher_details(self):
         assert self.t.name == 'Dayo'
@@ -40,7 +40,7 @@ class TestTeacher:
 
     def test_add_question_to_first_quiz(self):
         self.create_quiz('Science')
-        quiz = self.add_question('Science', 'Day or night?', {'A': 'Day', 'B': 'Night'})
+        quiz = self.add_question('Science', 'Day or night?', {'A': 'Day', 'B': 'Night'}, 'A')
         assert quiz == {
             'questions': [
                 {
@@ -50,12 +50,12 @@ class TestTeacher:
                     }
                 }
             ],
-            'answers': []
+            'answers': ['A']
         }
 
     def test_add_question_to_second_quiz(self):
         self.create_quiz('Health Education')
-        quiz = self.add_question('Health Education', 'How are you?', {'A': 'Good', 'B': 'Not good'})
+        quiz = self.add_question('Health Education', 'How are you?', {'A': 'Good', 'B': 'Not good'}, 'B')
         assert quiz == {
             'questions': [
                 {
@@ -65,14 +65,14 @@ class TestTeacher:
                     }
                 }
             ],
-            'answers': []
+            'answers': ['B']
         }
 
     def test_add_another_question_to_second_quiz(self):
         subject = 'Health Education'
         self.create_quiz(subject)
-        self.add_question(subject, 'How are you?', {'A': 'Good', 'B': 'Not good'})
-        quiz = self.add_question(subject, 'Are you sure?', {'A': 'Yes', 'B': 'No'})
+        self.add_question(subject, 'How are you?', {'A': 'Good', 'B': 'Not good'}, 'A')
+        quiz = self.add_question(subject, 'Are you sure?', {'A': 'Yes', 'B': 'No'}, 'B')
         assert quiz == {
             'questions': [
                 {
@@ -88,14 +88,14 @@ class TestTeacher:
                     }
                 }
             ],
-            'answers': []
+            'answers': ['A', 'B']
         }
 
     def test_assign_quiz(self):
         subject = 'Health Education'
         self.create_quiz(subject)
-        self.add_question(subject, 'How are you?', {'A': 'Good', 'B': 'Not good'})
-        quiz = self.add_question(subject, 'Are you sure?', {'A': 'Yes', 'B': 'No'})
+        self.add_question(subject, 'How are you?', {'A': 'Good', 'B': 'Not good'}, 'A')
+        quiz = self.add_question(subject, 'Are you sure?', {'A': 'Yes', 'B': 'No'}, 'B')
 
         s = Student('Aaron', classroom='Form 2')
         s_with_quiz = self.t.assign_quiz(s, quiz)

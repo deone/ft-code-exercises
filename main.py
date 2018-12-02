@@ -15,7 +15,7 @@ class Teacher(Person):
         }
         self.quizzes[subject] = quiz
 
-    def add_question(self, subject, question, options):
+    def add_question(self, subject, question, options, answer):
         question_list = self.quizzes[subject]['questions']
         question_count = len(question_list)
 
@@ -28,6 +28,7 @@ class Teacher(Person):
             str(question_number): question,
             'options': options
         })
+        self.quizzes[subject]['answers'].append(answer)
         return self.quizzes[subject]
 
     def assign_quiz(self, student, quiz):
