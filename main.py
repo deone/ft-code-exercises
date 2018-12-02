@@ -77,9 +77,10 @@ class Student(Person):
 
         return self.quiz
 
-    def submit_quiz(self):
+    def submit_quiz(self, quiz):
         # Only submit quiz if all questions have been answered
-        if len(self.quiz['questions'] == len(self.quiz['answers'])):
-            self.quiz['completed'] = True
+        if len(quiz['questions']) == len(quiz['answers']):
+            quiz['completed'] = True
+            return quiz
         else:
             raise InvalidAction('You can only submit quiz after answering all questions.')

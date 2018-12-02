@@ -47,3 +47,27 @@ class TestStudent:
             },
             'subject': 'Health Education'
         }
+
+    def test_submit_quiz(self):
+        self.student.solve_question(1, 'A')
+        self.student.solve_question(2, 'A')
+        quiz = self.student.solve_question(3, 'A')
+
+        completed_quiz = self.student.submit_quiz(quiz)
+        assert completed_quiz == {
+            'answers': {'1': 'A', '3': 'A', '2': 'A'},
+            'completed': True,
+            'name': 'Aaron Buddy',
+            'questions': {
+                '1': {
+                    'question': 'How are you?', 'options': {'A': 'Good', 'B': 'Not good'}
+                },
+                '3': {
+                    'question': 'Cold or fever?', 'options': {'A': 'Cold', 'B': 'Fever'}
+                },
+                '2': {
+                    'question': 'Are you sure?', 'options': {'A': 'Yes', 'B': 'No'}
+                }
+            },
+            'subject': 'Health Education'
+        }
