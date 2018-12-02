@@ -158,17 +158,16 @@ class TestTeacher:
             'subject': 'Health Education'
         }
 
-    # Create quiz
-    # Assign quiz
-    # Solve quiz
-
     def test_grade_incomplete_quiz(self):
+        # Create quiz
         subject = 'Health Education'
         self.create_quiz_with_questions(subject)
 
+        # Assign quiz
         questions = self.teacher.get_questions(subject)
         self.teacher.assign_quiz(self.student, subject, questions)
 
+        # Solve quiz
         self.student.solve_question(1, 'A')
         quiz = self.student.solve_question(2, 'A')
 
@@ -177,4 +176,21 @@ class TestTeacher:
         assert 'You cannot grade an incomplete quiz.' in str(excinfo.value)
 
     def test_grade_quiz(self):
-        pass
+        # Create quiz
+        subject = 'Health Education'
+        self.create_quiz_with_questions(subject)
+
+        # Assign quiz
+        questions = self.teacher.get_questions(subject)
+        self.teacher.assign_quiz(self.student, subject, questions)
+
+        # Solve quiz
+        self.student.solve_question(1, 'B')
+        self.student.solve_question(2, 'A')
+        quiz = self.student.solve_question(3, 'B')
+
+        # Submit quiz
+        completed_quiz = self.student.submit_quiz(quiz)
+
+        #Grade quiz
+        assert self.teacher.grade_quiz(completed_quiz) == {'Aaron Buddy': '66.67'}
