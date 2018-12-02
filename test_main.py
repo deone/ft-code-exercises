@@ -3,10 +3,10 @@ from main import Teacher, Student
 
 class TestTeacher:
     def setup_method(self):
-        self.t = Teacher('Dayo', classroom='Form 2')
+        self.teacher = Teacher('Dayo', classroom='Form 2')
 
     def create_quiz(self, subject):
-        self.t.create_quiz(subject)
+        self.teacher.create_quiz(subject)
 
     def create_quiz_with_questions(self):
         subject = 'Health Education'
@@ -14,15 +14,15 @@ class TestTeacher:
         return self.add_question(subject, 'How are you?', {'A': 'Good', 'B': 'Not good'}, 'B')
 
     def add_question(self, subject, question, options, answer):
-        return self.t.add_question(subject, question, options, answer)
+        return self.teacher.add_question(subject, question, options, answer)
 
     def test_teacher_details(self):
-        assert self.t.name == 'Dayo'
-        assert self.t.classroom == 'Form 2'
+        assert self.teacher.name == 'Dayo'
+        assert self.teacher.classroom == 'Form 2'
 
     def test_create_quiz(self):
         self.create_quiz('Science')
-        assert self.t.quizzes == {
+        assert self.teacher.quizzes == {
             'Science': {
                 'questions': [],
                 'answers': []
@@ -32,7 +32,7 @@ class TestTeacher:
     def test_create_another_quiz(self):
         self.create_quiz('Science')
         self.create_quiz('Health Education')
-        assert self.t.quizzes == {
+        assert self.teacher.quizzes == {
             'Science': {
                 'questions': [],
                 'answers': []
@@ -96,7 +96,7 @@ class TestTeacher:
 
     def test_get_questions(self):
         self.create_quiz_with_questions()
-        assert self.t.get_questions('Health Education') == [{
+        assert self.teacher.get_questions('Health Education') == [{
                 '1': 'How are you?',
                 'options': {
                     'A': 'Good', 'B': 'Not good'
@@ -111,14 +111,14 @@ class TestTeacher:
         quiz = self.add_question(subject, 'Are you sure?', {'A': 'Yes', 'B': 'No'}, 'B')
 
         s = Student('Aaron', classroom='Form 2')
-        s_with_quiz = self.t.assign_quiz(s, quiz)
+        s_with_quiz = self.teacher.assign_quiz(s, quiz)
         assert s.quiz == quiz
 
     def test_assign_quiz_without_questions(self):
         subject = 'Science'
         self.create_quiz(subject)
-        s = Student('Aaron', classroom='Form 2')
+        student = Student('Aaron', classroom='Form 2')
 
         with pytest.raises(AttributeError) as excinfo:
-            s_with_quiz = self.t.assign_quiz(s, self.t.quizzes[subject])
+            student_with_quiz = self.teacher.assign_quiz(student, self.teacher.quizzes[subject])
         assert 'Please add questions before assigning quiz.' in str(excinfo.value)
