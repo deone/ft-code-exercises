@@ -56,7 +56,9 @@ class Teacher(Person):
         score = 0
         grade_book = {}
 
-        if quiz['completed']:
+        completed = quiz.get('completed', None)
+
+        if completed:
             # Compare teacher's answers to student's answers
             subject = quiz['subject']
             student_name = quiz['name']

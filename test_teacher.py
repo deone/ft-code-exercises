@@ -130,15 +130,15 @@ class TestTeacher:
 
         with pytest.raises(InvalidAction) as excinfo:
             questions = self.teacher.get_questions(subject)
-            student_with_quiz = self.teacher.assign_quiz(self.student, subject, questions)
+            self.teacher.assign_quiz(self.student, subject, questions)
         assert 'Please add questions before assigning quiz.' in str(excinfo.value)
 
     def test_assign_quiz(self):
         subject = 'Health Education'
-        quiz = self.create_quiz_with_questions(subject)
+        self.create_quiz_with_questions(subject)
 
         questions = self.teacher.get_questions(subject)
-        student_with_quiz = self.teacher.assign_quiz(self.student, subject, questions)
+        self.teacher.assign_quiz(self.student, subject, questions)
         assert self.student.quiz == {
             'name': 'Aaron Buddy',
             'questions': {
@@ -165,7 +165,16 @@ class TestTeacher:
     def test_grade_incomplete_quiz(self):
         subject = 'Health Education'
         self.create_quiz_with_questions(subject)
+
         questions = self.teacher.get_questions(subject)
+        self.teacher.assign_quiz(self.student, subject, questions)
+
+        self.student.solve_question(1, 'A')
+        quiz = self.student.solve_question(2, 'A')
+
+        with pytest.raises(InvalidAction) as excinfo:
+            self.teacher.grade_quiz(quiz)
+        assert 'You cannot grade an incomplete quiz.' in str(excinfo.value)
 
     def test_grade_quiz(self):
         pass
