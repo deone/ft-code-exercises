@@ -8,6 +8,11 @@ class TestTeacher:
     def create_quiz(self, subject):
         self.t.create_quiz(subject)
 
+    def create_quiz_with_questions(self):
+        subject = 'Health Education'
+        self.create_quiz(subject)
+        return self.add_question(subject, 'How are you?', {'A': 'Good', 'B': 'Not good'}, 'B')
+
     def add_question(self, subject, question, options, answer):
         return self.t.add_question(subject, question, options, answer)
 
@@ -54,8 +59,7 @@ class TestTeacher:
         }
 
     def test_add_question_to_second_quiz(self):
-        self.create_quiz('Health Education')
-        quiz = self.add_question('Health Education', 'How are you?', {'A': 'Good', 'B': 'Not good'}, 'B')
+        quiz = self.create_quiz_with_questions()
         assert quiz == {
             'questions': [
                 {
@@ -70,8 +74,7 @@ class TestTeacher:
 
     def test_add_another_question_to_second_quiz(self):
         subject = 'Health Education'
-        self.create_quiz(subject)
-        self.add_question(subject, 'How are you?', {'A': 'Good', 'B': 'Not good'}, 'A')
+        self.create_quiz_with_questions()
         quiz = self.add_question(subject, 'Are you sure?', {'A': 'Yes', 'B': 'No'}, 'B')
         assert quiz == {
             'questions': [
@@ -88,8 +91,18 @@ class TestTeacher:
                     }
                 }
             ],
-            'answers': ['A', 'B']
+            'answers': ['B', 'B']
         }
+
+    def test_get_questions(self):
+        self.create_quiz_with_questions()
+        assert self.t.get_questions('Health Education') == [{
+                '1': 'How are you?',
+                'options': {
+                    'A': 'Good', 'B': 'Not good'
+                }
+            }
+        ]
 
     def test_assign_quiz(self):
         subject = 'Health Education'

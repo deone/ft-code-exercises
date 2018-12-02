@@ -31,6 +31,9 @@ class Teacher(Person):
         self.quizzes[subject]['answers'].append(answer)
         return self.quizzes[subject]
 
+    def get_questions(self, subject):
+        return self.quizzes[subject]['questions']
+
     def assign_quiz(self, student, quiz):
         if not quiz['questions']:
             raise AttributeError('Please add questions before assigning quiz.')
