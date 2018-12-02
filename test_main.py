@@ -24,8 +24,8 @@ class TestTeacher:
         self.create_quiz('Science')
         assert self.teacher.quizzes == {
             'Science': {
-                'questions': [],
-                'answers': []
+                'questions': {},
+                'answers': {}
             }
         }
 
@@ -34,12 +34,12 @@ class TestTeacher:
         self.create_quiz('Health Education')
         assert self.teacher.quizzes == {
             'Science': {
-                'questions': [],
-                'answers': []
+                'questions': {},
+                'answers': {}
             },
             'Health Education': {
-                'questions': [],
-                'answers': []
+                'questions': {},
+                'answers': {}
             }
         }
 
@@ -47,29 +47,23 @@ class TestTeacher:
         self.create_quiz('Science')
         quiz = self.add_question('Science', 'Day or night?', {'A': 'Day', 'B': 'Night'}, 'A')
         assert quiz == {
-            'questions': [
-                {
-                    '1': 'Day or night?',
-                    'options': {
-                        'A': 'Day', 'B': 'Night'
-                    }
-                }
-            ],
-            'answers': ['A']
+            'answers': {'1': 'A'},
+            'questions': {
+                '1': {'question': 'Day or night?', 'options': {'A': 'Day', 'B': 'Night'}}
+            }
+            
         }
 
     def test_add_question_to_second_quiz(self):
         quiz = self.create_quiz_with_questions()
         assert quiz == {
-            'questions': [
-                {
-                    '1': 'How are you?',
-                    'options': {
-                        'A': 'Good', 'B': 'Not good'
-                    }
+            'answers': {'1': 'B'},
+            'questions': {
+                '1': {
+                    'question': 'How are you?',
+                    'options': {'A': 'Good', 'B': 'Not good'}
                 }
-            ],
-            'answers': ['B']
+            }
         }
 
     def test_add_another_question_to_second_quiz(self):
@@ -77,32 +71,24 @@ class TestTeacher:
         self.create_quiz_with_questions()
         quiz = self.add_question(subject, 'Are you sure?', {'A': 'Yes', 'B': 'No'}, 'B')
         assert quiz == {
-            'questions': [
-                {
-                    '1': 'How are you?',
-                    'options': {
-                        'A': 'Good', 'B': 'Not good'
-                    }
+            'answers': {'1': 'B', '2': 'B'},
+            'questions': {
+                '1': {
+                    'question': 'How are you?',
+                    'options': {'A': 'Good', 'B': 'Not good'}
                 },
-                {
-                    '2': 'Are you sure?',
-                    'options': {
-                        'A': 'Yes', 'B': 'No'
-                    }
+                '2': {
+                    'question': 'Are you sure?',
+                    'options': {'A': 'Yes', 'B': 'No'}
                 }
-            ],
-            'answers': ['B', 'B']
+            }
         }
 
     def test_get_questions(self):
         self.create_quiz_with_questions()
-        assert self.teacher.get_questions('Health Education') == [{
-                '1': 'How are you?',
-                'options': {
-                    'A': 'Good', 'B': 'Not good'
-                }
-            }
-        ]
+        assert self.teacher.get_questions('Health Education') == {
+            '1': {'question': 'How are you?', 'options': {'A': 'Good', 'B': 'Not good'}}
+        }
 
     def test_assign_quiz_without_questions(self):
         subject = 'Science'
@@ -119,8 +105,9 @@ class TestTeacher:
         quiz = self.create_quiz_with_questions()
 
         student_with_quiz = self.teacher.assign_quiz(student, subject)
-
         assert student.quiz == {
-            'subject': 'Health Education',
-            'questions': [{'1': 'How are you?', 'options': {'A': 'Good', 'B': 'Not good'}}]
+            'questions': {
+                '1': {'question': 'How are you?', 'options': {'A': 'Good', 'B': 'Not good'}}
+            },
+            'subject': 'Health Education'
         }
