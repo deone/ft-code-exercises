@@ -19,7 +19,8 @@ class TestTeacher:
         self.create_quiz('Science')
         assert self.t.quizzes == {
             'Science': {
-                'questions': []
+                'questions': [],
+                'answers': []
             }
         }
 
@@ -28,10 +29,12 @@ class TestTeacher:
         self.create_quiz('Health Education')
         assert self.t.quizzes == {
             'Science': {
-                'questions': []
+                'questions': [],
+                'answers': []
             },
             'Health Education': {
-                'questions': []
+                'questions': [],
+                'answers': []
             }
         }
 
@@ -47,6 +50,7 @@ class TestTeacher:
                     }
                 }
             ],
+            'answers': []
         }
 
     def test_add_question_to_second_quiz(self):
@@ -61,6 +65,7 @@ class TestTeacher:
                     }
                 }
             ],
+            'answers': []
         }
 
     def test_add_another_question_to_second_quiz(self):
@@ -83,6 +88,7 @@ class TestTeacher:
                     }
                 }
             ],
+            'answers': []
         }
 
     def test_assign_quiz(self):

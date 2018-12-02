@@ -10,7 +10,8 @@ class Teacher(Person):
 
     def create_quiz(self, subject):
         quiz = {
-            'questions': []
+            'questions': [],
+            'answers': []
         }
         self.quizzes[subject] = quiz
 
