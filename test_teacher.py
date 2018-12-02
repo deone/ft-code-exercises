@@ -5,6 +5,7 @@ from main import Teacher, Student, InvalidAction
 class TestTeacher:
     def setup_method(self):
         self.teacher = Teacher('Dayo Osikoya', 'Form 2')
+        self.student = Student('Aaron Buddy', classroom='Form 2')
 
     def create_quiz(self, subject):
         self.teacher.create_quiz(subject)
@@ -124,19 +125,19 @@ class TestTeacher:
     def test_assign_quiz_without_questions(self):
         subject = 'Science'
         self.create_quiz(subject)
-        student = Student('Aaron', classroom='Form 2')
 
         with pytest.raises(InvalidAction) as excinfo:
-            student_with_quiz = self.teacher.assign_quiz(student, subject)
+            questions = self.teacher.get_questions(subject)
+            student_with_quiz = self.teacher.assign_quiz(self.student, subject, questions)
         assert 'Please add questions before assigning quiz.' in str(excinfo.value)
 
     def test_assign_quiz(self):
-        student = Student('Aaron Buddy', classroom='Form 2')
         subject = 'Health Education'
         quiz = self.create_quiz_with_questions()
 
-        student_with_quiz = self.teacher.assign_quiz(student, subject)
-        assert student.quiz == {
+        questions = self.teacher.get_questions(subject)
+        student_with_quiz = self.teacher.assign_quiz(self.student, subject, questions)
+        assert self.student.quiz == {
             'name': 'Aaron Buddy',
             'questions': {
                 '1': {
@@ -160,7 +161,7 @@ class TestTeacher:
     # Solve quiz
 
     def test_grade_incomplete_quiz(self):
-        pass
+        quiz = self.create_quiz_with_questions()
 
     def test_grade_quiz(self):
         pass

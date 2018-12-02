@@ -46,8 +46,7 @@ class Teacher(Person):
     def get_questions(self, subject):
         return self.quizzes[subject]['questions']
 
-    def assign_quiz(self, student, subject):
-        questions = self.get_questions(subject)
+    def assign_quiz(self, student, subject, questions):
         if not questions:
             raise InvalidAction('Please add questions before assigning quiz.')
         return student.set_quiz(subject, questions)

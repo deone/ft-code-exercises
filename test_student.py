@@ -15,7 +15,8 @@ class TestStudent:
         self.teacher.add_question(subject, 'Cold or fever?', {'A': 'Cold', 'B': 'Fever'}, 'B')
 
         # Assign quiz to student
-        student_with_quiz = self.teacher.assign_quiz(self.student, subject)
+        questions = self.teacher.get_questions(subject)
+        student_with_quiz = self.teacher.assign_quiz(self.student, subject, questions)
 
     def test_student_details(self):
         assert self.student.name == 'Aaron Buddy'
