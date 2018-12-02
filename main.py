@@ -55,8 +55,23 @@ class Student(Person):
 
     def solve_question(self, question_number, answer):
         # Select question
-        question = self.quiz['questions']['1']
+        question = self.quiz['questions'][str(question_number)]
+        options = question['options']
 
-        if answer not in self.quiz['questions']['answers']:
+        if answer not in options:
             raise KeyError('Answer provided is not in options.')
-        return
+
+        answers = self.quiz.get('answers', None)
+        if answers is None:
+            self.quiz['answers'] = {str(question_number): answer}
+        else:
+            answers[str(question_number)] = answer
+
+        if len(self.quiz['questions'] == len(self.quiz['answers'])):
+            self.quiz['completed'] = True
+
+        return self.quiz
+
+    def submit_quiz(self):
+        # Only submit quiz if all questions have been answered
+        pass

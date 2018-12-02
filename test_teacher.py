@@ -1,9 +1,10 @@
 import pytest
+
 from main import Teacher, Student
 
 class TestTeacher:
     def setup_method(self):
-        self.teacher = Teacher('Dayo', classroom='Form 2')
+        self.teacher = Teacher('Dayo', 'Form 2')
 
     def create_quiz(self, subject):
         self.teacher.create_quiz(subject)
