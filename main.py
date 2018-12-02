@@ -1,19 +1,21 @@
-class Person:
+class Person(object):
     def __init__(self, name, classroom):
         self.name = name
         self.classroom = classroom
-        self.quiz = {}
 
 class Teacher(Person):
-    def create_quiz(self, subject):
-        self.quiz.update({
-            'teacher_name': self.name,
-            'subject': subject,
-            'questions': []
-        })
+    def __init__(self, name, classroom):
+        super(Teacher, self).__init__(name, classroom)
+        self.quizzes = {}
 
-    def add_question(self, question, answers):
-        question_list = self.quiz['questions']
+    def create_quiz(self, subject):
+        quiz = {
+            'questions': []
+        }
+        self.quizzes[subject] = quiz
+
+    def add_question(self, subject, question, answers):
+        question_list = self.quizzes[subject]['questions']
         question_count = len(question_list)
 
         if question_count == 0:
@@ -25,7 +27,7 @@ class Teacher(Person):
             str(question_number): question,
             'answers': answers
         })
-        return self.quiz
+        return self.quizzes[subject]
 
     def assign_quiz(self, student, quiz):
         if not quiz['questions']:
@@ -34,7 +36,7 @@ class Teacher(Person):
 
 class Student(Person):
     def set_quiz(self, quiz):
-        self.quiz.update(quiz)
+        self.quiz = quiz
 
     def submit_answer(self, answer):
         if answer not in self.quiz['questions']['answers']:
