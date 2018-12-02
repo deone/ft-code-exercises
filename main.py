@@ -34,14 +34,18 @@ class Teacher(Person):
     def get_questions(self, subject):
         return self.quizzes[subject]['questions']
 
-    def assign_quiz(self, student, quiz):
-        if not quiz['questions']:
+    def assign_quiz(self, student, subject):
+        questions = self.get_questions(subject)
+        if not questions:
             raise AttributeError('Please add questions before assigning quiz.')
-        return student.set_quiz(quiz)
+        return student.set_quiz(subject, questions)
 
 class Student(Person):
-    def set_quiz(self, quiz):
-        self.quiz = quiz
+    def set_quiz(self, subject, questions):
+        self.quiz = {
+            'subject': subject,
+            'questions': questions
+        }
 
     def submit_answer(self, answer):
         if answer not in self.quiz['questions']['answers']:

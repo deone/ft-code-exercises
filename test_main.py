@@ -104,21 +104,23 @@ class TestTeacher:
             }
         ]
 
-    def test_assign_quiz(self):
-        subject = 'Health Education'
-        self.create_quiz(subject)
-        self.add_question(subject, 'How are you?', {'A': 'Good', 'B': 'Not good'}, 'A')
-        quiz = self.add_question(subject, 'Are you sure?', {'A': 'Yes', 'B': 'No'}, 'B')
-
-        s = Student('Aaron', classroom='Form 2')
-        s_with_quiz = self.teacher.assign_quiz(s, quiz)
-        assert s.quiz == quiz
-
     def test_assign_quiz_without_questions(self):
         subject = 'Science'
         self.create_quiz(subject)
         student = Student('Aaron', classroom='Form 2')
 
         with pytest.raises(AttributeError) as excinfo:
-            student_with_quiz = self.teacher.assign_quiz(student, self.teacher.quizzes[subject])
+            student_with_quiz = self.teacher.assign_quiz(student, subject)
         assert 'Please add questions before assigning quiz.' in str(excinfo.value)
+
+    def test_assign_quiz(self):
+        student = Student('Aaron', classroom='Form 2')
+        subject = 'Health Education'
+        quiz = self.create_quiz_with_questions()
+
+        student_with_quiz = self.teacher.assign_quiz(student, subject)
+
+        assert student.quiz == {
+            'subject': 'Health Education',
+            'questions': [{'1': 'How are you?', 'options': {'A': 'Good', 'B': 'Not good'}}]
+        }
