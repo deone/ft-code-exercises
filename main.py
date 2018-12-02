@@ -1,3 +1,6 @@
+import itertools
+from collections import OrderedDict
+
 class InvalidAction(Exception):
     pass
 
@@ -50,8 +53,25 @@ class Teacher(Person):
         return student.set_quiz(subject, questions)
 
     def grade_quiz(self, quiz):
-        # Only grade quiz if completed is True
-        pass
+        # Only grade quiz if submitted
+        score = 0
+        grade_book = {}
+
+        if quiz['completed']:
+            # Compare teacher's answers to student's answers
+            subject = quiz['subject']
+            student_name = quiz['name']
+            students_answers = OrderedDict(quiz['answers'])
+            score_per_question = 100 / len(quiz['questions'].keys())
+            teachers_answers = OrderedDict(self.quizzes[subject]['answers'])
+            for teacher_answer, student_answer in itertools.izip(teachers_answers, students_answers):
+                if teacher_answer == student_answer:
+                    score += score_per_question
+
+            grade_book[student_name] = score
+            return grade_book
+        else:
+            raise InvalidAction('You cannot grade an incomplete quiz.')
 
 class Student(Person):
     def set_quiz(self, subject, questions):

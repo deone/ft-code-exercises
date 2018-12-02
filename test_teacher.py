@@ -12,7 +12,9 @@ class TestTeacher:
     def create_quiz_with_questions(self):
         subject = 'Health Education'
         self.create_quiz(subject)
-        return self.add_question(subject, 'How are you?', {'A': 'Good', 'B': 'Not good'}, 'B')
+        self.add_question(subject, 'How are you?', {'A': 'Good', 'B': 'Not good'}, 'B')
+        self.add_question(subject, 'Cold or Fever?', {'A': 'Cold', 'B': 'Fever'}, 'B')
+        return self.add_question(subject, 'Are you sure?', {'A': 'Yes', 'B': 'No'}, 'B')
 
     def add_question(self, subject, question, options, answer):
         return self.teacher.add_question(subject, question, options, answer)
@@ -58,11 +60,19 @@ class TestTeacher:
     def test_add_question_to_second_quiz(self):
         quiz = self.create_quiz_with_questions()
         assert quiz == {
-            'answers': {'1': 'B'},
+            'answers': {'1': 'B', '3': 'B', '2': 'B'},
             'questions': {
                 '1': {
                     'question': 'How are you?',
                     'options': {'A': 'Good', 'B': 'Not good'}
+                },
+                '3': {
+                    'question': 'Are you sure?',
+                    'options': {'A': 'Yes', 'B': 'No'}
+                },
+                '2': {
+                    'question': 'Cold or Fever?',
+                    'options': {'A': 'Cold', 'B': 'Fever'}
                 }
             }
         }
@@ -70,15 +80,24 @@ class TestTeacher:
     def test_add_another_question_to_second_quiz(self):
         subject = 'Health Education'
         self.create_quiz_with_questions()
-        quiz = self.add_question(subject, 'Are you sure?', {'A': 'Yes', 'B': 'No'}, 'B')
+        quiz = self.add_question(
+            subject, 'Are you sure?', {'A': 'Yes', 'B': 'No'}, 'B')
         assert quiz == {
-            'answers': {'1': 'B', '2': 'B'},
+            'answers': {'1': 'B', '3': 'B', '2': 'B', '4': 'B'},
             'questions': {
                 '1': {
                     'question': 'How are you?',
                     'options': {'A': 'Good', 'B': 'Not good'}
                 },
+                '3': {
+                    'question': 'Are you sure?',
+                    'options': {'A': 'Yes', 'B': 'No'}
+                },
                 '2': {
+                    'question': 'Cold or Fever?',
+                    'options': {'A': 'Cold', 'B': 'Fever'}
+                },
+                '4': {
                     'question': 'Are you sure?',
                     'options': {'A': 'Yes', 'B': 'No'}
                 }
@@ -88,7 +107,18 @@ class TestTeacher:
     def test_get_questions(self):
         self.create_quiz_with_questions()
         assert self.teacher.get_questions('Health Education') == {
-            '1': {'question': 'How are you?', 'options': {'A': 'Good', 'B': 'Not good'}}
+            '1': {
+                'question': 'How are you?',
+                'options': {'A': 'Good', 'B': 'Not good'}
+            },
+            '3': {
+                'question': 'Are you sure?',
+                'options': {'A': 'Yes', 'B': 'No'}
+            },
+            '2': {
+                'question': 'Cold or Fever?',
+                'options': {'A': 'Cold', 'B': 'Fever'}
+            }
         }
 
     def test_assign_quiz_without_questions(self):
@@ -107,9 +137,30 @@ class TestTeacher:
 
         student_with_quiz = self.teacher.assign_quiz(student, subject)
         assert student.quiz == {
+            'name': 'Aaron Buddy',
             'questions': {
-                '1': {'question': 'How are you?', 'options': {'A': 'Good', 'B': 'Not good'}}
+                '1': {
+                    'question': 'How are you?',
+                    'options': {'A': 'Good', 'B': 'Not good'}
+                },
+                '3': {
+                    'question': 'Are you sure?',
+                    'options': {'A': 'Yes', 'B': 'No'}
+                },
+                '2': {
+                    'question': 'Cold or Fever?',
+                    'options': {'A': 'Cold', 'B': 'Fever'}
+                }
             },
-            'subject': 'Health Education',
-            'name': 'Aaron Buddy'
+            'subject': 'Health Education'
         }
+
+    # Create quiz
+    # Assign quiz
+    # Solve quiz
+
+    def test_grade_incomplete_quiz(self):
+        pass
+
+    def test_grade_quiz(self):
+        pass
