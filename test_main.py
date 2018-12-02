@@ -42,7 +42,7 @@ class TestTeacher:
             'questions': [
                 {
                     '1': 'Day or night?',
-                    'answers': {
+                    'options': {
                         'A': 'Day', 'B': 'Night'
                     }
                 }
@@ -56,7 +56,7 @@ class TestTeacher:
             'questions': [
                 {
                     '1': 'How are you?',
-                    'answers': {
+                    'options': {
                         'A': 'Good', 'B': 'Not good'
                     }
                 }
@@ -72,13 +72,13 @@ class TestTeacher:
             'questions': [
                 {
                     '1': 'How are you?',
-                    'answers': {
+                    'options': {
                         'A': 'Good', 'B': 'Not good'
                     }
                 },
                 {
                     '2': 'Are you sure?',
-                    'answers': {
+                    'options': {
                         'A': 'Yes', 'B': 'No'
                     }
                 }
