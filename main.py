@@ -1,3 +1,6 @@
+class InvalidAction(Exception):
+    pass
+
 class Person(object):
     def __init__(self, name, classroom):
         self.name = name
@@ -43,12 +46,17 @@ class Teacher(Person):
     def assign_quiz(self, student, subject):
         questions = self.get_questions(subject)
         if not questions:
-            raise AttributeError('Please add questions before assigning quiz.')
+            raise InvalidAction('Please add questions before assigning quiz.')
         return student.set_quiz(subject, questions)
+
+    def grade_quiz(self, quiz):
+        # Only grade quiz if completed is True
+        pass
 
 class Student(Person):
     def set_quiz(self, subject, questions):
         self.quiz = {
+            'name': self.name,
             'subject': subject,
             'questions': questions
         }
@@ -59,7 +67,7 @@ class Student(Person):
         options = question['options']
 
         if answer not in options:
-            raise KeyError('Answer provided is not in options.')
+            raise InvalidAction('Answer provided is not in options.')
 
         answers = self.quiz.get('answers', None)
         if answers is None:
@@ -67,11 +75,11 @@ class Student(Person):
         else:
             answers[str(question_number)] = answer
 
-        if len(self.quiz['questions'] == len(self.quiz['answers'])):
-            self.quiz['completed'] = True
-
         return self.quiz
 
     def submit_quiz(self):
         # Only submit quiz if all questions have been answered
-        pass
+        if len(self.quiz['questions'] == len(self.quiz['answers'])):
+            self.quiz['completed'] = True
+        else:
+            raise InvalidAction('You can only submit quiz after answering all questions.')

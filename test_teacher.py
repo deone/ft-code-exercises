@@ -1,10 +1,10 @@
 import pytest
 
-from main import Teacher, Student
+from main import Teacher, Student, InvalidAction
 
 class TestTeacher:
     def setup_method(self):
-        self.teacher = Teacher('Dayo', 'Form 2')
+        self.teacher = Teacher('Dayo Osikoya', 'Form 2')
 
     def create_quiz(self, subject):
         self.teacher.create_quiz(subject)
@@ -18,7 +18,7 @@ class TestTeacher:
         return self.teacher.add_question(subject, question, options, answer)
 
     def test_teacher_details(self):
-        assert self.teacher.name == 'Dayo'
+        assert self.teacher.name == 'Dayo Osikoya'
         assert self.teacher.classroom == 'Form 2'
 
     def test_create_quiz(self):
@@ -96,12 +96,12 @@ class TestTeacher:
         self.create_quiz(subject)
         student = Student('Aaron', classroom='Form 2')
 
-        with pytest.raises(AttributeError) as excinfo:
+        with pytest.raises(InvalidAction) as excinfo:
             student_with_quiz = self.teacher.assign_quiz(student, subject)
         assert 'Please add questions before assigning quiz.' in str(excinfo.value)
 
     def test_assign_quiz(self):
-        student = Student('Aaron', classroom='Form 2')
+        student = Student('Aaron Buddy', classroom='Form 2')
         subject = 'Health Education'
         quiz = self.create_quiz_with_questions()
 
@@ -110,5 +110,6 @@ class TestTeacher:
             'questions': {
                 '1': {'question': 'How are you?', 'options': {'A': 'Good', 'B': 'Not good'}}
             },
-            'subject': 'Health Education'
+            'subject': 'Health Education',
+            'name': 'Aaron Buddy'
         }
