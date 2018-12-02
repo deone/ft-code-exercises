@@ -1,6 +1,7 @@
 class Person:
-    def __init__(self, name):
+    def __init__(self, name, classroom):
         self.name = name
+        self.classroom = classroom
         self.quiz = {}
 
 class Teacher(Person):

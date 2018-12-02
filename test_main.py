@@ -3,7 +3,7 @@ from main import Teacher, Student
 
 class TestTeacher:
     def setup_method(self):
-        self.t = Teacher('Dayo')
+        self.t = Teacher('Dayo', classroom='Form 2')
     
     def test_teacher_name(self):
         assert self.t.name == 'Dayo'
@@ -66,13 +66,13 @@ class TestTeacher:
         self.t.add_question('How are you?', {'A': 'Good', 'B': 'Not good'})
         quiz = self.add_question('Are you sure?', {'A': 'Yes', 'B': 'No'})
 
-        s = Student('Aaron')
+        s = Student('Aaron', classroom='Form 2')
         s_with_quiz = self.t.assign_quiz(s, quiz)
         assert s.quiz == quiz
 
     def test_assign_quiz_without_questions(self):
         self.create_quiz()
-        s = Student('Aaron')
+        s = Student('Aaron', classroom='Form 2')
 
         with pytest.raises(AttributeError) as excinfo:
             s_with_quiz = self.t.assign_quiz(s, self.t.quiz)
